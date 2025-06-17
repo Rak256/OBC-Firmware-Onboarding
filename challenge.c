@@ -16,10 +16,9 @@
 // respectively. The value of `q1A` should be initialized to 0 and the value 
 // of `q1B`should be initialized to 1.
 //-------------------------------------------------------------------------
-int q1A;
-int q1B;
-q1A = 0;
-q1B = 1;
+int q1A = 0;
+int q1B = 1;
+
 
 //-------------------------------------------------------------------------
 // Question 2
@@ -41,7 +40,7 @@ int q2Array[Q2_ARRAY_SIZE];
 //-------------------------------------------------------------------------
 uint16_t q3(uint8_t x, uint8_t y) {
     uint16_t new_x = x ^ 0b10000001;
-    uint16_t new_num = new_x + y;
+    uint16_t new_num = (new_x << 8) + y;
     return new_num; 
 }
 
@@ -61,9 +60,7 @@ int32_t q4(uint8_t * array, uint32_t arrayLength) {
     }
     int32_t sum = 0;
     for (uint8_t i = 0; i < arrayLength; i++) {
-        if (array[i] != NULL){
-        sum += array[i];
-        }
+        sum += array[i];  
     }
 
     return sum;
@@ -185,7 +182,7 @@ error_t q11(q11_a_t *a, q11_b_t *b){
 // Define a macro called `MIN` that takes two parameters and finds the
 // lesser value of the 2. The macro should return the result.
 //-------------------------------------------------------------------------
-#define MIN(a,b) (a <= b ? a : b)
+#define MIN(a,b) ((a <= b) ? a : b)
 //-------------------------------------------------------------------------
 // Question 13
 // Complete the following function. The function should return
@@ -194,15 +191,20 @@ error_t q11(q11_a_t *a, q11_b_t *b){
 // 0x00000006 the function should return a void pointer pointing to 
 // 0x00000009 or -1 if there is an error.
 //-------------------------------------------------------------------------
-
+static int error = -1;
 void *q13(uint32_t *ptr1, uint16_t *ptr2){
     if (!ptr1 || !ptr2){
-        return -1;
+        return &error;
+    }
+    if ((uintptr_t)ptr1 <= (uintptr_t)ptr2){
+        void *p = ptr1;
+        return p;
     }
 
-    void *p = MIN(ptr1, ptr2) + 5;
-
-    return p;
+    else{
+        void *p = ptr2;
+        return p;
+    }
 }
 //-------------------------------------------------------------------------
 // The following function is used to test your code. Do not remove any 
